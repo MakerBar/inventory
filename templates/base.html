@@ -1,0 +1,20 @@
+{% load url from future %}
+{% load staticfiles %}
+{% load i18n %}
+
+<html>
+
+    <head>
+		<link href='{% static 'css/bundle.css' %}' rel='stylesheet' />
+    </head>
+
+    <body>
+        {% block content %}
+            
+        {% endblock content %}
+
+        {% block scripts %}
+
+        {% endblock scripts %}
+    </body>
+</html>
