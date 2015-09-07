@@ -8,10 +8,12 @@
 		<link href='{% static 'css/bundle.css' %}' rel='stylesheet' />
     </head>
 
-    <body>
-        {% block content %}
-            
-        {% endblock content %}
+	<body>
+		<div class=container-fluid'>
+			{% block content %}
+				
+			{% endblock content %}
+		</div>
 
         {% block scripts %}
 
