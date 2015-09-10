@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ =$;
 
-var Search = require('./search');
+var Search = require('./search/search');
 
 $(function() {
     var SearchView = new Search.View();
