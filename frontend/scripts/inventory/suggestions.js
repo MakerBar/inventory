@@ -6,21 +6,22 @@ Backbone.$ =$;
 module.exports = {
 
     View: Backbone.View.extend({
-        template: _.template($('#suggestions-template').html()),
+        template: _.template($('#suggestion-template').html()),
 
         suggestions: [],
 
-        get_suggestions: function(query_string) {
-            $.get('suggestions', {query_string: query_string}, function(data) {
-                this.suggestions = data.suggestions;
-                this.render();    
-            });
+        render: function() {
+          	//this.$el.html(this.template(this.suggestions));
+            return this;
         },
 
-        render: function() {
-            this.$el.html(this.template(this.suggestions));
-            return this;
-        }
-    }),
+        get_suggestions: function(query_string) {
+			var view_this = this;
 
+            $.get('suggestions', {query_string: query_string}, function(data) {
+                view_this.suggestions = data.suggestions;
+                view_this.render();
+            });
+        },
+    }),
 };

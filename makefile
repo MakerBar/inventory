@@ -28,7 +28,7 @@ reset:
 dev: reset scripts styles
 
 scripts:
-	$(BROWSERIFY) $(SCRIPT_DEV_PARAMS) $(FRONTEND_SRC)/scripts/main.js > $(BUILD_DIR)/js/bundle.js
+	$(BROWSERIFY) $(SCRIPT_DEV_PARAMS) $(FRONTEND_SRC)/scripts/inventory/main.js > $(BUILD_DIR)/js/bundle.js
 
 styles:
 	$(LESS) --source-map-less-inline --source-map-map-inline --clean-css $(FRONTEND_SRC)/styles/main.less $(BUILD_DIR)/css/bundle.css

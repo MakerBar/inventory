@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+    <div id='main-container'></div>
+{% endblock content %}
+
+{% block templates %}
+{% include 'inventory/frontend/search.html' %}
+{% include 'inventory/frontend/suggestion.html' %}
+{% endblock templates %}
+
+{% block scripts %}
+<script src='{% static 'js/bundle.js' %}'></script>
+{% endblock scripts %}
