@@ -14,7 +14,7 @@ UNCSS=$(NPM_DIR)/uncss
 CLOSURE=$(NPM_DIR)/ccjs
 
 init:
-	npm install
+	(cd $(FRONTEND_SRC); npm install)
 
 watch:
 	$(WATCH) --exec 'make dev' $(FRONTEND_SRC)/scripts $(FRONTEND_SRC)/styles
