@@ -13,6 +13,7 @@ module.exports = {
         suggestions_view: new Suggestions.View(),
 
         events: {
+			'click #create-item': 'create_item',
             'keyup #search-box': 'suggestions'
         },
 
@@ -21,6 +22,10 @@ module.exports = {
 			this.$search_box = this.$el.find('#search-box');
             return this;
         },
+
+		create_item: function(e) {
+			Backbone.history.navigate('item/create', {trigger:true});
+		},
 
         suggestions: function(e) {
             var query_string = this.$search_box.val();

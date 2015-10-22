@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from views import (SearchView,
-                   SuggestionsView)
+                   SuggestionsView,
+                   CreateItemView)
 
 urlpatterns = [
     url(r'^$',
@@ -11,4 +12,8 @@ urlpatterns = [
     url(r'^suggestions/$',
         SuggestionsView.as_view(),
         name='suggestions'),
+
+    url(r'^item/create/$',
+        CreateItemView.as_view(),
+        name='item-create'),
 ]

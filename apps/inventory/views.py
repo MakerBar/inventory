@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
-from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView
 
 from models import Item
 from serializers import ItemSerializer
@@ -30,3 +30,14 @@ class SuggestionsView(ListAPIView):
 
         return Item.objects.filter(
             name__icontains=query_string)[:amount]
+
+class ItemView(RetrieveAPIView):
+    serializer_class = ItemSerializer
+
+class CreateItemView(CreateAPIView):
+    serializer_class = ItemSerializer
+
+class UpdateItemView(UpdateAPIView):
+    serializer_class = ItemSerializer
+    queryset = Item.objects.all()
+
