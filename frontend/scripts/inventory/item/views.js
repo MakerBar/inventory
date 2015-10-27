@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
-var Models = require('./models');
+var ItemModels = require('./models');
 
 module.exports = {
 
@@ -22,7 +22,7 @@ module.exports = {
 				quantity: quantity
 			};
 
-			var item = new Models.CreateModel();
+			var item = new ItemModels.Create();
 			item.save(new_item_vals);
 		},
 

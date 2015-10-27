@@ -9,7 +9,7 @@ urlpatterns = [
         SearchView.as_view(),
         name='search'),
 
-    url(r'^suggestions/$',
+    url(r'^item/suggestions/$',
         SuggestionsView.as_view(),
         name='suggestions'),
 

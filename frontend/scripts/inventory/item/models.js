@@ -5,13 +5,19 @@ Backbone.$ = $;
 
 module.exports = {
 
-	CreateModel: Backbone.Model.extend({
+	Create: Backbone.Model.extend({
 		urlRoot: 'item/create/'
 	}),
 
-	UpdateModel: Backbone.Model.extend({
+	Update: Backbone.Model.extend({
 		url: function() {
 			return 'item/update/' + this.get('id');
 		}
 	}),
+
+    Suggestion: Backbone.Model.extend({
+        defaults: {
+            'name': ''
+        }
+    }),
 };

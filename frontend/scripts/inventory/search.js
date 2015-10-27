@@ -3,14 +3,13 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ =$;
 
-var Suggestions = require('./suggestions');
+var ItemCollections = require('./item/collections');
+
 
 module.exports = {
 
     View: Backbone.View.extend({
         template: _.template($('#search-template').html()),
-
-        suggestions_view: new Suggestions.View(),
 
         events: {
 			'click #create-item': 'create_item',
@@ -30,7 +29,17 @@ module.exports = {
         suggestions: function(e) {
             var query_string = this.$search_box.val();
 
-            this.suggestions_view.get_suggestions(query_string);
+            var params = {
+                type: 'GET',
+                data: {
+                    query_string: query_string
+                }
+            };
+
+            var suggestions = new ItemCollections.Suggestions();
+            suggestions.fetch(params).done(function() {
+               console.log(suggestions); 
+            });
         },
     }),
 };
