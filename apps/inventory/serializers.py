@@ -11,4 +11,4 @@ class ItemSerializer(ModelSerializer):
 class ItemSuggestionSerializer(ModelSerializer):
     class Meta:
         model = Item
-        fields = ('name',)
+        fields = ('id', 'name')

@@ -6,7 +6,12 @@ Backbone.$ = $;
 module.exports = {
 
 	Create: Backbone.Model.extend({
-		urlRoot: 'item/create/'
+		urlRoot: 'item/create/',
+
+        defaults: {
+            'name': '',
+            'quantitiy': 0
+        }
 	}),
 
 	Update: Backbone.Model.extend({
@@ -17,6 +22,7 @@ module.exports = {
 
     Suggestion: Backbone.Model.extend({
         defaults: {
+            'id': 0,
             'name': ''
         }
     }),
