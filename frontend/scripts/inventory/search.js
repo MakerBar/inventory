@@ -1,11 +1,7 @@
 var $ = require('jquery');
-var jQuery = $;
 var _ = require('underscore');
 var Backbone = require('backbone');
-Backbone.$ = $;
-var typeahead = require('typeahead.js-browserify');
-typeahead.loadjQueryPlugin();
-var Bloodhound = typeahead.Bloodhound;
+Backbone.$ =$;
 
 var ItemCollections = require('./item/collections');
 
@@ -15,54 +11,73 @@ module.exports = {
     View: Backbone.View.extend({
         template: _.template($('#search-template').html()),
         suggestion_template: _.template($('#suggestion-template').html()),
+        suggestions_none_template: _.template($('#suggestion-none-template').html()),
+        suggestions_loading_template: _.template($('#suggestion-loading-template').html()),
 
         events: {
 			'click #create-item': 'create_item',
+            'keyup #search-box': 'suggestions'
         },
 
-        initialize: function() {
-            this.bloodhound = new Bloodhound({
-                identify: function(o) { return o.id; },
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-                dupDetector: function(a, b) { return a.id === b.id; },
-                remote: {
-                    url: 'item/suggestions/?query_string=%QUERY',
-                    wildcard: '%QUERY'
-                }
-            });
-        },
-
-        render: function() {
+        render: function() { 
             this.$el.html(this.template());
-			this.$search_box = this.$el.find('#search-box');
 
-            this.$search_box.typeahead({
-                minLength: 0,
-                classNames: {
-                    open: 'is-open',
-                    empty: 'is-empty',
-                    cursor: 'is-active',
-                    suggestion: 'Typeahead-suggestion',
-                    selectable: 'Typeahead-selectable'
-                }
-            },
-            {
-                source: this.bloodhound,
-                displayKey: 'screen_name',
-                templates: {
-                    suggestion: this.suggestion_template,
-                    empty: this.suggestion_template
-                }
-            })
-            .on('typeahead:asyncrequest', function() {
-                $('.Typeahead-spinner').show();
-            })
-            .on('typeahead:asynccancel typeahead:asyncreceive', function() {
-                $('.Typeahead-spinner').hide();
-            });
+			this.$search_box = this.$el.find('#search-box');
+            this.$suggestions = this.$el.find('#suggestions');
+            this.$suggestions_loading = $(this.suggestions_loading_template());
+            this.$suggestions_none = $(this.suggestions_none_template());
 
             return this;
+        },
+
+        append_suggestion: function(item) {
+            this.$suggestions.append(
+                this.suggestion_template({
+                    item: item.toJSON()
+                })
+            );
+        },
+
+        render_suggestions_none: function() {
+            this.$suggestions.html(this.$suggestions_none);
+        },
+
+        render_suggestions_loading: function() {
+            this.$suggestions.html(this.$suggestions_loading);
+        },
+
+        suggestions: function(e) {
+            var query_string = this.$search_box.val();
+
+            if(query_string.length === 0) {
+                this.$suggestions.html('');
+                return;
+            }
+
+            this.render_suggestions_loading();
+
+            var params = {
+                type: 'GET',
+                data: {
+                    query_string: query_string
+                }
+            };
+
+            var view_this = this;
+
+            var suggestions = new ItemCollections.Suggestions();
+            suggestions.fetch(params).done(function() {
+
+                if( suggestions.length > 0 ) {
+                    view_this.$suggestions.html('');
+                    suggestions.each(function(item) {
+                        view_this.append_suggestion(item);
+                    });
+                }
+                else {
+                    view_this.render_suggestions_none();   
+                }
+            });
         },
 
 		create_item: function(e) {

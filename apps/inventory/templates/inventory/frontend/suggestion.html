@@ -1,3 +1,19 @@
 <script id='suggestion-template' type='text/template'>
-    test
+    <li class='suggestion' data-id='<%= item.id %>'>
+        <span>
+            <%= item.name  %>
+        </span>
+    </li>
+</script>
+
+<script id='suggestion-loading-template' type='text/template'>
+    <li class='suggestion loading'>
+        Gimme a sec...
+    </li>
+</script>
+
+<script id='suggestion-none-template' type='text/template'>
+    <li class='suggestion none'>
+        I have no idea what you trying to type!
+    </li>
 </script>
