@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-Backbone.$ =$;
+Backbone.$ = $;
 
 var Search = require('./search');
 var ItemModels = require('./item/models');

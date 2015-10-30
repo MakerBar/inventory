@@ -11,8 +11,9 @@ module.exports = {
     View: Backbone.View.extend({
         template: _.template($('#search-template').html()),
         suggestion_template: _.template($('#suggestion-template').html()),
-        suggestions_none_template: _.template($('#suggestion-none-template').html()),
-        suggestions_loading_template: _.template($('#suggestion-loading-template').html()),
+        suggestions_none_template: _.template($('#suggestions-none-template').html()),
+        suggestions_loading_template: _.template($('#suggestions-loading-template').html()),
+        suggestions_error_template: _.template($('#suggestions-error-template').html()),
 
         events: {
 			'click #create-item': 'create_item',
@@ -26,6 +27,7 @@ module.exports = {
             this.$suggestions = this.$el.find('#suggestions');
             this.$suggestions_loading = $(this.suggestions_loading_template());
             this.$suggestions_none = $(this.suggestions_none_template());
+            this.$suggestions_error = $(this.suggestions_error_template());
 
             return this;
         },
@@ -46,6 +48,10 @@ module.exports = {
             this.$suggestions.html(this.$suggestions_loading);
         },
 
+        render_suggestions_error: function() {
+            this.$suggestions.html(this.$suggestions_error);
+        },
+
         suggestions: function(e) {
             var query_string = this.$search_box.val();
 
@@ -64,8 +70,8 @@ module.exports = {
             };
 
             var view_this = this;
-
             var suggestions = new ItemCollections.Suggestions();
+
             suggestions.fetch(params).done(function() {
 
                 if( suggestions.length > 0 ) {
@@ -77,6 +83,10 @@ module.exports = {
                 else {
                     view_this.render_suggestions_none();   
                 }
+
+            })
+            .fail(function() {
+                view_this.render_suggestions_error();
             });
         },
 
