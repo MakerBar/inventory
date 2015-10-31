@@ -16,8 +16,9 @@ module.exports = {
         suggestions_error_template: _.template($('#suggestions-error-template').html()),
 
         events: {
+            'keyup #search-box': 'suggestions',
+            'click .suggestion': 'select_suggestion',
 			'click #create-item': 'create_item',
-            'keyup #search-box': 'suggestions'
         },
 
         render: function() { 
@@ -29,6 +30,7 @@ module.exports = {
             this.$suggestions_none = $(this.suggestions_none_template());
             this.$suggestions_error = $(this.suggestions_error_template());
 
+            this.delegateEvents();
             return this;
         },
 
@@ -88,6 +90,11 @@ module.exports = {
             .fail(function() {
                 view_this.render_suggestions_error();
             });
+        },
+
+        select_suggestion: function(e) {
+            var item_id = $(e.target).data('id');
+            Backbone.history.navigate('item/update/' + item_id, {trigger:true});
         },
 
 		create_item: function(e) {

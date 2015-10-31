@@ -1,7 +1,8 @@
 from django.views.generic import TemplateView
 
 from rest_framework.generics import (ListAPIView, RetrieveAPIView,
-                                     CreateAPIView, UpdateAPIView)
+                                     CreateAPIView, UpdateAPIView,
+                                     DestroyAPIView)
 
 from models import Item
 from serializers import ItemSerializer, ItemSuggestionSerializer
@@ -34,14 +35,20 @@ class SuggestionsView(ListAPIView):
             name__icontains=query_string)[:amount]
 
 
-class ItemView(RetrieveAPIView):
+class ItemRetrieveView(RetrieveAPIView):
+    serializer_class = ItemSerializer
+    queryset = Item.objects.all()
+
+
+class ItemCreateView(CreateAPIView):
     serializer_class = ItemSerializer
 
 
-class CreateItemView(CreateAPIView):
+class ItemUpdateView(UpdateAPIView):
     serializer_class = ItemSerializer
+    queryset = Item.objects.all()
 
 
-class UpdateItemView(UpdateAPIView):
+class ItemDeleteView(DestroyAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()

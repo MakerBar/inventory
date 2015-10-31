@@ -17,8 +17,8 @@ $(function() {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'search',
-            'item/create': 'create',
-            'item/update/:item_id': 'update'
+            'item/create': 'item_create',
+            'item/update/:item_id': 'item_update'
         },
 
         search: function() {
@@ -26,9 +26,18 @@ $(function() {
             $main_container.html(SearchView.$el);
         },
 
-        create: function() {
+        item_create: function() {
             ItemCreateView.render();
             $main_container.html(ItemCreateView.$el);
+        },
+
+        item_update: function(item_id) {
+            var item = new ItemModels.Retrieve({id: item_id});
+            item.fetch().done(function() {
+                ItemUpdateView.item = item;
+                ItemUpdateView.render();
+                $main_container.html(ItemUpdateView.$el);
+            });
         },
     });
 
