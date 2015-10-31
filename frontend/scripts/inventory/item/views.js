@@ -7,34 +7,34 @@ var ItemModels = require('./models');
 
 module.exports = {
 
-	CreateView: Backbone.View.extend({
-		template: _.template($('#item-create-template').html()),
+    CreateView: Backbone.View.extend({
+        template: _.template($('#item-create-template').html()),
 
-		events: {
-			'click .save': 'create_item'
-		},
+        events: {
+            'click .save': 'create_item'
+        },
 
-		render: function() {
-			this.$el.html(this.template());
+        render: function() {
+            this.$el.html(this.template());
 
             this.delegateEvents();
-			return this;
-		},
+            return this;
+        },
 
-		create_item: function() {
-			var name = this.$el.find('.name').val();
-			var quantity = parseInt(this.$el.find('.quantity').val());
-			var new_item_vals = {
-				name: name,
-				quantity: quantity
-			};
+        create_item: function() {
+            var name = this.$el.find('.name').val();
+            var quantity = parseInt(this.$el.find('.quantity').val());
+            var new_item_vals = {
+                name: name,
+                quantity: quantity
+            };
 
-			var item = new ItemModels.Create();
-			item.save(new_item_vals);
+            var item = new ItemModels.Create();
+            item.save(new_item_vals);
 
             Backbone.history.navigate('', {trigger:true});
-		}
-	}),
+        }
+    }),
 
     UpdateView: Backbone.View.extend({
         template: _.template($('#item-update-template').html()),

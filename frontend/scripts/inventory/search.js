@@ -97,8 +97,8 @@ module.exports = {
             Backbone.history.navigate('item/update/' + item_id, {trigger:true});
         },
 
-		create_item: function(e) {
-			Backbone.history.navigate('item/create', {trigger:true});
-		},
+        create_item: function(e) {
+            Backbone.history.navigate('item/create', {trigger:true});
+        },
     }),
 };
