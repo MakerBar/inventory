@@ -2,20 +2,32 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
+require('selectize');
 
 var ItemModels = require('./models');
 
 module.exports = {
 
     CreateView: Backbone.View.extend({
-        template: _.template($('#item-create-template').html()),
+        template: _.template($('#item-update-template').html()),
 
         events: {
             'click .save': 'create_item'
         },
 
         render: function() {
-            this.$el.html(this.template());
+            this.$el.html(this.template({item: {}}));
+
+            this.$el.find('.tags').selectize({
+                delimiter: ',',
+                persist: false,
+                create: function(input) {
+                    return {
+                        value: input,
+                        text: input
+                    };
+                }
+            });
 
             this.delegateEvents();
             return this;
