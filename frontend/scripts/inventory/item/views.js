@@ -18,7 +18,9 @@ module.exports = {
         render: function() {
             this.$el.html(this.template({item: {}}));
 
-            this.$el.find('.tags').selectize({
+            this.$tags = this.$el.find('.tags');
+
+            this.$tags.selectize({
                 delimiter: ',',
                 persist: false,
                 create: function(input) {
@@ -36,9 +38,13 @@ module.exports = {
         create_item: function() {
             var name = this.$el.find('.name').val();
             var quantity = parseInt(this.$el.find('.quantity').val());
+            var location = this.$el.find('.location').val();
+            var tags = this.$tags.get(0).selectize.items;
             var new_item_vals = {
                 name: name,
-                quantity: quantity
+                quantity: quantity,
+                location: location,
+                tags: tags
             };
 
             var item = new ItemModels.Create();
@@ -61,6 +67,19 @@ module.exports = {
                 item: this.item.toJSON()
             }));
 
+            this.$tags = this.$el.find('.tags');
+
+            this.$tags.selectize({
+                delimiter: ',',
+                persist: false,
+                create: function(input) {
+                    return {
+                        value: input,
+                        text: input
+                    };
+                }
+            });
+
             this.delegateEvents();
             return this;
         },
@@ -68,11 +87,15 @@ module.exports = {
         update_item: function() {
             var name = this.$el.find('.name').val();
             var quantity = parseInt(this.$el.find('.quantity').val());
-			var updated_item_vals = {
+            var location = this.$el.find('.location').val();
+            var tags = this.$tags.get(0).selectize.items;
+            var updated_item_vals = {
                 id: this.item.get('id'),
-				name: name,
-				quantity: quantity
-			};
+                name: name,
+                quantity: quantity,
+                location: location,
+                tags: tags
+            };
 
             var update_item = new ItemModels.Update(updated_item_vals);
             update_item.save();

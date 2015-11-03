@@ -7,11 +7,6 @@ module.exports = {
 
 	Create: Backbone.Model.extend({
 		urlRoot: 'item/create/',
-
-        defaults: {
-            'name': '',
-            'quantitiy': 0
-        }
 	}),
 
     Retrieve: Backbone.Model.extend({

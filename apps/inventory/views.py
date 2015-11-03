@@ -4,7 +4,7 @@ from rest_framework.generics import (ListAPIView, RetrieveAPIView,
                                      CreateAPIView, UpdateAPIView,
                                      DestroyAPIView)
 
-from models import Item
+from models import Item, ItemTag
 from serializers import ItemSerializer, ItemSuggestionSerializer
 
 from constants import DEFAULT_NUM_SUGGESTIONS, MAX_NUM_SUGGESTIONS
@@ -39,16 +39,67 @@ class ItemRetrieveView(RetrieveAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
 
+    def get(self, request, pk):
+        response = super(ItemRetrieveView, self).get(request)
+
+        id = response.data['id']
+        item = Item.objects.get(id=id)
+
+        tags = ItemTag.objects.filter(item=item).values_list(
+            'tag', flat=True)
+
+        response.data['tags'] = tags
+
+        return response
+
 
 class ItemCreateView(CreateAPIView):
     serializer_class = ItemSerializer
+
+    def post(self, request):
+        tags = request.data['tags']
+
+        response = super(ItemCreateView, self).post(request)
+        id = response.data['id']
+        item = Item.objects.get(id=id)
+
+        for tag in tags:
+            item_tag = ItemTag()
+            item_tag.tag = tag
+            item_tag.item = item
+            item_tag.save()
+
+        return response
 
 
 class ItemUpdateView(UpdateAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
 
+    def put(self, request, pk):
+        tags = request.data['tags']
+
+        response = super(ItemUpdateView, self).put(request)
+        id = response.data['id']
+        item = Item.objects.get(id=id)
+
+        ItemTag.objects.filter(item=item).delete()
+
+        for tag in tags:
+            item_tag = ItemTag()
+            item_tag.tag = tag
+            item_tag.item = item
+            item_tag.save()
+
+        return response
+
 
 class ItemDeleteView(DestroyAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
+
+    def delete(self, request, pk):
+        item = Item.objects.get(id=pk)
+        ItemTag.objects.filter(item=item).delete()
+
+        return super(ItemDeleteView, self).delete(request)
