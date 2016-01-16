@@ -1,0 +1,18 @@
+[
+    {
+        "model": "apps.inventory.models.Location",
+        "pk": 1,
+        "fields": {
+            "name": "PEG BOARD A",
+            "description": "left side of work tables"
+        }
+    },
+    {
+        "model": "apps.inventory.models.Location",
+        "pk": 2,
+        "fields": {
+            "name": "WORK TABLE A",
+            "description": "Middle of wall, to the left"
+        }
+    }
+]

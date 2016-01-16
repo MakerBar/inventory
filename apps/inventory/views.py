@@ -4,8 +4,10 @@ from rest_framework.generics import (ListAPIView, RetrieveAPIView,
                                      CreateAPIView, UpdateAPIView,
                                      DestroyAPIView)
 
-from models import Item, ItemTag
-from serializers import ItemSerializer, ItemSuggestionSerializer
+from models import Location, Item, ItemTag
+from forms import LocationForm
+from serializers import (LocationSerializer, ItemSerializer,
+                         ItemSuggestionSerializer)
 
 from constants import DEFAULT_NUM_SUGGESTIONS, MAX_NUM_SUGGESTIONS
 
@@ -35,6 +37,24 @@ class SuggestionsView(ListAPIView):
             name__icontains=query_string)[:amount]
 
 
+class LocationListView(ListAPIView):
+    serializer_class = LocationSerializer
+
+
+class LocationCreateView(CreateAPIView):
+    serializer_class = LocationSerializer
+
+
+class LocationUpdateView(UpdateAPIView):
+    serializer_class = LocationSerializer
+    queryset = Location.objects.all()
+
+
+class LocationDeleteView(DestroyAPIView):
+    serializer_class = LocationSerializer
+    queryset = Location.objects.all()
+
+
 class ItemRetrieveView(RetrieveAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
@@ -52,9 +72,11 @@ class ItemRetrieveView(RetrieveAPIView):
 
         return response
 
-
 class ItemCreateView(CreateAPIView):
     serializer_class = ItemSerializer
+
+    def get_context_data(self, **kwargs):
+        context['locations'] = LocationForm()
 
     def post(self, request):
         tags = request.data['tags']
